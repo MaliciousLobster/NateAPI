@@ -26,10 +26,14 @@ curl_setopt($curl, CURLOPT_POST, true);
 curl_setopt($curl, CURLOPT_POSTFIELDS, $access_token_settings); //setting the postfields to the array settup
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); //settig equal to 1 because strings are being returned
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); //verify the curl is actually there. in live-work production it would be set to true
-}
+
 
 $result = curl_exec($curl);
-curl_close();
+curl_close($curl);
+$results = json_decode($result, true);
+
+}
+else{}
 
 ?>
 <!DOCTYPE html>
