@@ -10,7 +10,16 @@ define('clientSecret', 'ebacc95ad11f4d588492f5a6c38953b4');
 define('redirectURI', 'http://localhost/NateAPI/index.php');
 define('ImageDirectory', 'pics/');
 
-
+if isset(($_GET['code'])){
+	$code = ($_GET['code']);
+	$url = 'https://api.instagram.com/oauth/access_token';
+	$access_token_settings = array('client_id' => clientID,
+									'client_secret' => clientSecret,
+									'grant_type' => 'authorization_code',
+									'redirect_uri' =>redirectURI,
+									'code' => $code
+									);
+}
 
 
 ?>
@@ -22,6 +31,6 @@ define('ImageDirectory', 'pics/');
 <body>
 	<!--creating a login to go and give approval to access instagram profile
 	after approval, now the information are usable.  -->
-	<a href="https:api.instagram.com/oauth.authorize/?client_id=<?php echo clientID; ?>&redirect_uri=<?php echo redirectURI; ?>&response_type=code/">LOGIN</a>
+	<a href="https:api.instagram.com/oauth.authorize/?client_id=<?php echo clientID; ?>&redirect_uri=<?php echo redirectURI; ?>&response_type=code">LOGIN</a>
 </body>
 </html>
