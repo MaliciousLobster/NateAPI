@@ -31,7 +31,7 @@ function getUserID($userName){
 	$instagramInfo = connectToInstagram($url);
 	$results = json_decode($instagramInfo, true);
 
-	echo $results['data']['0']['id'];
+	return $results['data']['0']['id'];
 }
 
 //function to print out images onto the screen
@@ -40,9 +40,9 @@ function printImages($userID){
 	$instagramInfo = connectToInstagram($url);
 	$results = json_decode($instagramInfo, true);
 	//parse in info one by one
-	foreach($results['data'] as $items){
+	foreach ($results['data'] as $items){
 		$image_url = $items['items']['low_resolution']['url']; //goes through the results and returns an url and saves it to the PHP server
-		echo '<img src=" ' . $image_url ' "/><br/>';
+		echo '<img src=" ' . $image_url . ' "/><br/>';
 	}
 }
 
