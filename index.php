@@ -10,6 +10,30 @@ define('clientSecret', 'ebacc95ad11f4d588492f5a6c38953b4');
 define('redirectURI', 'http://localhost/NateAPI/index.php');
 define('ImageDirectory', 'pics/');
 
+//function that connects to insta
+function connectToInstagram($url){
+	$ch = curl_init();
+
+	curl_setopt_array($ch, array(
+			CURLOPT_URL => $url,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_SSL_VERIFYHOST => 2,
+		));
+	$result= curl_exec($ch);
+	curl_close($ch);
+	return $result;
+}
+
+//function to get userID
+function getUserID($userName){
+	$url = 'http://api.instagram.com/v1/users/search?q=' . $userName . '&client_id=' . clientID;
+	$instagramInfo = connectToInstagram($url);
+	$results = json_decode($instagramInfo, true);
+
+	echo $results['data']['0']['id'];
+}
+
 if (isset($_GET['code'])){
 	$code = ($_GET['code']);
 	$url = 'https://api.instagram.com/oauth/access_token';
@@ -28,12 +52,15 @@ curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1); //settig equal to 1 because strin
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false); //verify the curl is actually there. in live-work production it would be set to true
 
 
+
 $result = curl_exec($curl);
 curl_close($curl);
+
 $results = json_decode($result, true);
+getUserID($results['user']['username']);
 
 }
-else{}
+else{
 
 ?>
 <!DOCTYPE html>
@@ -47,3 +74,6 @@ else{}
 	<a href="https:api.instagram.com/oauth/authorize/?client_id=<?php echo clientID; ?>&redirect_uri=<?php echo redirectURI; ?>&response_type=code">LOGIN</a>
 </body>
 </html>
+<?php
+}
+?>
