@@ -27,23 +27,34 @@ function connectToInstagram($url){
 
 //function to get userID
 function getUserID($userName){
-	$url = 'http://api.instagram.com/v1/users/search?q=' . $userName . '&client_id=' . clientID;
+	$url = 'https://api.instagram.com/v1/users/search?q=' . $userName . '&client_id=' . clientID;
 	$instagramInfo = connectToInstagram($url);
 	$results = json_decode($instagramInfo, true);
 
-	return $results['data']['0']['id'];
+	return $results['data'][0]['id'];
 }
 
 //function to print out images onto the screen
 function printImages($userID){
-	$url = 'http://api.instagram.com/v1/users/' . $userID . '/media/recent?client_id=' . clientID . '&count=5';
+	$url = 'https://api.instagram.com/v1/users/' . $userID . '/media/recent?client_id=' . clientID . '&count=5';
 	$instagramInfo = connectToInstagram($url);
 	$results = json_decode($instagramInfo, true);
 	//parse in info one by one
 	foreach ($results['data'] as $items){
-		$image_url = $items['items']['low_resolution']['url']; //goes through the results and returns an url and saves it to the PHP server
+		$image_url = $items['images']['low_resolution']['url']; //goes through the results and returns an url and saves it to the PHP server
 		echo '<img src=" ' . $image_url . ' "/><br/>';
+		//calling a function to save the $image_url
+		savePictures($image_url);
 	}
+}
+
+function savePictures($image_url){
+	echo $image_url . '<br/>';
+	$filename = basename($image_url); //where the images are getting stored
+	echo $filename . '<br/>';
+
+	$destination = ImageDirectory . $filename; //making the sure the image doesn't already exist in the file
+	file_put_contents($destination, file_get_contents($image_url)); //goes in and grabs the images and stores it in the file
 }
 
 if (isset($_GET['code'])){
@@ -83,6 +94,10 @@ else{
 <!DOCTYPE html>
 <html>
 <head>
+	<link type="text/css" rel="stylesheet" href="css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <meta charset="UTF-8">
 	<title></title>
 </head>
 <body>
