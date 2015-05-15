@@ -1,6 +1,6 @@
 <!DOCTYPE <!DOCTYPE html>
 
-<div class="blegh"> INSTAGRAM API </div>
+<h2 id="title"> INSTAGRAM API </h2>
 <?php
 //config for php server
  
@@ -107,6 +107,12 @@ printImages($userID);
 </head>
 <body>
 	<a href="#" class="back-to-top">Back to Top</a>
+	<!-- <nav>
+  		<ul class="pager">
+    		<li><a href="#">Previous</a></li>
+    		<li><a href="https://api.instagram.com/v1/users/' <?php echo $userID ?> '/media/recent?client_id='<?php echo clientID ?>'&count=8">Next</a></li>
+  		</ul>
+	</nav> -->
 
 </body>
 
