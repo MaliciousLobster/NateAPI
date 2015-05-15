@@ -1,5 +1,10 @@
+<!DOCTYPE <!DOCTYPE html>
+
+<div class="blegh"> INSTAGRAM API </div>
 <?php
 //config for php server
+ 
+
 set_time_limit(0);
 ini_set('default_socket_timeout', 300);
 session_start();
@@ -41,18 +46,17 @@ function printImages($userID){
 	$results = json_decode($instagramInfo, true);
 	//parse in info one by one
 	foreach ($results['data'] as $items){
-		$image_url = $items['images']['low_resolution']['url']; //goes through the results and returns an url and saves it to the PHP server
-		echo '<img src=" ' . $image_url . ' "/><br/>';
+		$image_url = $items['images']['low_resolution']['url'];//goes through the results and returns an url and saves it to the PHP server
+		echo '<div id="images"> <img src=" ' . $image_url . ' "/></div>';
 		//calling a function to save the $image_url
 		savePictures($image_url);
+		
 	}
 }
 
 function savePictures($image_url){
-	echo $image_url . '<br/>';
 	$filename = basename($image_url); //where the images are getting stored
-	echo $filename . '<br/>';
-
+	
 	$destination = ImageDirectory . $filename; //making the sure the image doesn't already exist in the file
 	file_put_contents($destination, file_get_contents($image_url)); //goes in and grabs the images and stores it in the file
 }
@@ -86,6 +90,49 @@ $userName = $results['user']['username'];
 $userID = getUserID($userName);
 
 printImages($userID);
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+
+	<link type="text/css" rel="stylesheet" href="css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+   	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+</head>
+<body>
+	<a href="#" class="back-to-top">Back to Top</a>
+
+</body>
+
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+	$('body').prepend('<a href="#" class="back-to-top">Back to Top</a>');
+	var amountScrolled = 200;
+
+$(window).scroll(function() {
+	if ($(window).scrollTop() > amountScrolled) {
+		$('a.back-to-top').fadeIn('slow');
+	} else {
+		$('a.back-to-top').fadeOut('slow');
+	}
+});
+$('a.back-to-top').click(function() {
+	$('html,body').animate({
+		scrollTop: 0
+	}, 700);
+	return false;
+});
+</script>
+</html>
+
+<?php
 
 }
 else{
@@ -94,17 +141,28 @@ else{
 <!DOCTYPE html>
 <html>
 <head>
+	<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+	<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
 	<link type="text/css" rel="stylesheet" href="css/main.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
     <meta charset="UTF-8">
+   	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
 	<title></title>
 </head>
 <body>
 	<!--creating a login to go and give approval to access instagram profile
 	after approval, now the information are usable.  -->
-	<a href="https:api.instagram.com/oauth/authorize/?client_id=<?php echo clientID; ?>&redirect_uri=<?php echo redirectURI; ?>&response_type=code">LOGIN</a>
+	<nav>
+		<a class="btn paper-raise" href="https:api.instagram.com/oauth/authorize/?client_id=<?php echo clientID; ?>&redirect_uri=<?php echo redirectURI; ?>&response_type=code">LOGIN</a>
+	</nav>
+	
+	<div class="blegh"></div>
+	
 </body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 </html>
 <?php
 }
